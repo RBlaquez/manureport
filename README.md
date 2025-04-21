@@ -1,5 +1,7 @@
 # ManuReport - Gerador de Relatórios de Manutenção
 
+[![Deploy](https://img.shields.io/badge/Render-Deployed-brightgreen?style=for-the-badge&logo=render)](https://manureport.onrender.com)
+
 **ManuReport** é uma aplicação web simples e eficiente para geração de relatórios técnicos de manutenção industrial. Ideal para empresas responsáveis por serviços ou equipes internas que precisam documentar ações corretivas, preventivas, preditivas e melhorias.
 
 ---
