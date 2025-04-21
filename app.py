@@ -282,10 +282,5 @@ def baixar_pdf(filename):
     return send_from_directory(PASTA_RELATORIOS, filename)
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    import os
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
-=======
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
->>>>>>> 4b950a7 (Ajusta host e porta para deploy na Render)
+    app.run(host="0.0.0.0", port=port, debug=True)
