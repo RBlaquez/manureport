@@ -232,8 +232,7 @@ def formulario():
         # Gera HTML e PDF (em memória)
         html = render_template("relatorio.html", dados=dados)
         caminho_arquivo = os.path.join(PASTA_RELATORIOS, nome_relatorio)
-        pdf = HTML(string=html).render()
-        pdf.write_pdf(caminho_arquivo)
+        HTML(string=html).write_pdf(target=caminho_arquivo)
        
         return render_template("relatorio.html", dados=dados)
 
