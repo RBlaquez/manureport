@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Manutenção</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 30px;
+            background-color: #fdfdfd;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .report-title {
+            font-size: 28px;
+            color: #0d6efd;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .company-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .company-card {
+            flex: 1 1 48%;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 15px;
+            background-color: #ffffff;
+            gap: 15px;
+            min-width: 300px;
+        }
+        .company-logo {
+            height: 60px;
+            width: 60px;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: white;
+            padding: 5px;
+        }
+        .company-info {
+            flex: 1;
+        }
+        .company-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #0d6efd;
+            font-size: 18px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+        }
+        .section {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #0d6efd;
+            font-size: 18px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .table th, .table td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+        .table th {
+            background-color: #f0f0f0;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="report-title">Relatório de Manutenção</div>
+    </div>
+
+    <div class="company-section">
+        <div class="company-card">
+            {% if dados.logo_responsavel_base64 %}
+            <img src="{{ dados.logo_responsavel_base64 }}" class="company-logo">
+            {% endif %}
+            <div class="company-info">
+                <h3>Empresa Responsável</h3>
+                <p><strong>Nome:</strong> {{ dados.empresa_responsavel_nome }}</p>
+                <p><strong>CNPJ:</strong> {{ dados.empresa_responsavel_cnpj }}</p>
+                <p><strong>Endereço:</strong> {{ dados.empresa_responsavel_endereco }}</p>
+                <p><strong>Telefone:</strong> {{ dados.empresa_responsavel_telefone }}</p>
+                <p><strong>Email:</strong> {{ dados.empresa_responsavel_email }}</p>
+            </div>
+        </div>
+
+        <div class="company-card">
+            {% if dados.logo_cliente_base64 %}
+            <img src="{{ dados.logo_cliente_base64 }}" class="company-logo">
+            {% endif %}
+            <div class="company-info">
+                <h3>Cliente</h3>
+                <p><strong>Nome:</strong> {{ dados.cliente_nome }}</p>
+                <p><strong>CNPJ:</strong> {{ dados.cliente_cnpj }}</p>
+                <p><strong>Endereço:</strong> {{ dados.cliente_endereco }}</p>
+                <p><strong>Telefone:</strong> {{ dados.cliente_telefone }}</p>
+                <p><strong>Email:</strong> {{ dados.cliente_email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Dados do Equipamento</h3>
+        <p><strong>Código:</strong> {{ dados.codigo }}</p>
+        <p><strong>Equipamento:</strong> {{ dados.equipamento }}</p>
+        <p><strong>Tipo:</strong> {{ dados.tipo }}</p>
+        <p><strong>Linha:</strong> {{ dados.linha }}</p>
+        <p><strong>Data Início:</strong> {{ dados.data_inicio }} - <strong>Hora Início:</strong> {{ dados.hora_inicio }}</p>
+        <p><strong>Data Fim:</strong> {{ dados.data_fim }} - <strong>Hora Fim:</strong> {{ dados.hora_fim }}</p>
+    </div>
+
+    <div class="section">
+        <h3>Informações Técnicas</h3>
+        <p><strong>Criticidade:</strong> {{ dados.criticidade }}</p>
+        <p><strong>Parte do Objeto:</strong> {{ dados.objeto }}</p>
+        <p><strong>Sintoma:</strong> {{ dados.sintoma }}</p>
+    </div>
+
+    <div class="section">
+        <h3>Descrição do Problema</h3>
+        <p>{{ dados.descricao }}</p>
+    </div>
+
+    <div class="section">
+        <h3>Análise dos 5 Porquês</h3>
+        {% for i in range(1, 6) %}
+            {% set p = 'porque' ~ i %}
+            {% if dados[p] %}
+                <p><strong>{{ i }}º Porquê:</strong> {{ dados[p] }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h3>Causa Fundamental</h3>
+        <p>{{ dados.causa }}</p>
+    </div>
+
+    <div class="section">
+        <h3>Observações</h3>
+        <p>{{ dados.observacao }}</p>
+    </div>
+
+    {% if dados.acoes %}
+    <div class="section">
+        <h3>Ações Realizadas</h3>
+        <table class="table">
+            <tr>
+                <th>Descrição</th>
+                <th>Data Início</th>
+                <th>Hora Início</th>
+                <th>Data Fim</th>
+                <th>Hora Fim</th>
+            </tr>
+            {% for acao in dados.acoes %}
+            <tr>
+                <td>{{ acao[0] }}</td>
+                <td>{{ acao[1] }}</td>
+                <td>{{ acao[2] }}</td>
+                <td>{{ acao[3] }}</td>
+                <td>{{ acao[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+    {% if dados.pendencias %}
+    <div class="section">
+        <h3>Pendências / Sugestões</h3>
+        <table class="table">
+            <tr><th>Descrição</th></tr>
+            {% for pend in dados.pendencias %}
+            <tr><td>{{ pend }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+    {% if not gerar_pdf %}
+    <div class="btn-container">
+        <a href="{{ url_for('baixar_pdf', filename=dados.nome_arquivo) }}" class="btn">Baixar PDF</a>
+    </div>
+    {% endif %}
+
+</body>
+</html>

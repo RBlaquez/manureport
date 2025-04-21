@@ -1,0 +1,23 @@
+# ⛔ Ignorar arquivos Python compilados
+__pycache__/
+*.pyc
+
+# ⛔ Ignorar ambiente virtual (se criado localmente)
+venv/
+
+# ⛔ Ignorar dados sensíveis e gerados localmente
+relatorios/
+empresa_responsavel.json
+usuarios.json
+static/logos/
+
+# ✅ MANTER arquivos de inicialização para ambiente local
+# (comentado para permitir o versionamento)
+# Se preferir ocultar no deploy, descomente as linhas abaixo:
+# iniciar.bat
+# manureport.vbs
+
+# ⛔ Outros arquivos temporários de sistema
+*.log
+.DS_Store
+Thumbs.db
