@@ -22,13 +22,20 @@
 
 ---
 
+## 🌐 Demonstração Online
+
+Acesse a aplicação online:  
+➡️ **[manureport.onrender.com](https://manureport.onrender.com)**
+
 ## 🧩 Tecnologias Utilizadas
 
-- **Python 3.11+**
-- **Flask** (framework web)
-- **Bootstrap 5** (design responsivo)
-- **Jinja2** (templates)
-- **WeasyPrint** (geração de PDF)
+- Python 3.11+
+- Flask 2.3
+- Bootstrap 5.3
+- Jinja2 (templates)
+- WeasyPrint (PDF)
+- Gunicorn (servidor WSGI)
+- Render.com (deploy gratuito)
 
 ---
 
@@ -36,13 +43,12 @@
 
 ```bash
 📁 manureport_web
-├── app.py
-├── usuarios.json
-├── empresa_responsavel.json
-├── /relatorios
-├── /static
-│   └── /logos
-├── /templates
+├── app.py                       # Código principal do app
+├── usuarios.json                # Dados de login (local)
+├── empresa_responsavel.json    # Dados da empresa (local)
+├── /relatorios                  # Relatórios gerados (local)
+├── /static/logos                # Logotipos enviados
+├── /templates                   # HTMLs renderizados
 │   ├── login.html
 │   ├── painel.html
 │   ├── configurar_empresa.html
@@ -50,32 +56,36 @@
 │   ├── alterar_senha.html
 │   ├── formulario.html
 │   └── relatorio.html
-├── iniciar.bat
-├── manureport.vbs
-├── README.md
-├── requirements.txt
+├── iniciar.bat                 # Inicia com terminal + navegador
+├── manureport.vbs              # Inicia silenciosamente
+├── requirements.txt            # Dependências
+├── Procfile                    # Deploy na Render
 └── .gitignore
 ```
 
 ---
 
-## 🛠️ Como Executar
+## 🛠️ Como Executar Localmente
 
 ### Opção 1: Manualmente
 
 ```bash
-# 1. Crie o ambiente virtual (opcional mas recomendado)
+# 1.Clone o repositório
+git clone https://github.com/RBlaquez/manureport.git
+cd manureport
+
+# 2. Crie o ambiente virtual (opcional mas recomendado)
 python -m venv venv
 source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate     # Windows
 
-# 2. Instale as dependências
+# 3. Instale as dependências
 pip install -r requirements.txt
 
-# 3. Execute a aplicação
+# 4. Execute a aplicação
 python app.py
 
-# Acesse em: http://127.0.0.1:5000
+# 5. Acesse em: http://127.0.0.1:5000
 ```
 
 ### Opção 2: Duplo Clique
@@ -83,6 +93,12 @@ python app.py
 
 ### Opção 3: Duplo Clique
 - `manureport.vbs` → inicia silenciosamente
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença **MIT**.
 
 ---
 
