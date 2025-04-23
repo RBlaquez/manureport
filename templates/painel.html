@@ -51,10 +51,10 @@
     <p class="mt-3">Usuário logado: <strong>{{ session['usuario'] }}</strong></p>
 
     {% if dados.empresa_logotipo %}
-        <div class="logo-preview">
-            <label class="form-label">Logotipo da Empresa</label>
-            <img src="{{ url_for('static', filename='logos/' + dados.empresa_logotipo.split('/')[-1]) }}" alt="Logo" class="img-fluid rounded shadow">
-        </div>
+      <div class="logo-preview">
+        <label class="form-label">Logotipo da Empresa</label>
+        <img src="{{ dados.empresa_logotipo }}" alt="Logo" class="img-fluid rounded shadow">
+      </div>
     {% endif %}
 
     <div class="menu-list">

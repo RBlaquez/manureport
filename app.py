@@ -6,6 +6,8 @@ import base64
 import json
 from weasyprint import HTML
 from werkzeug.utils import secure_filename
+from PIL import Image
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = "chave_super_segura_123"
@@ -210,10 +212,18 @@ def formulario():
             dados["logo_responsavel_base64"] = empresa_responsavel["empresa_logotipo"]
        
         # Logo do cliente (upload no formulário - NÃO salva no disco)
-        if "logotipo" in request.files:
-            logo_file = request.files["logotipo"]
-            if logo_file.filename != "":
+        logo_file = request.files.get("logotipo")
+        if logo_file and logo_file.filename:
+            try:
+                # Valida a imagem usando PIL
+                img = Image.open(logo_file)
+                img.verify()  # Lança erro se não for uma imagem válida
+                logo_file.seek(0)  # Reset após verificação
+        
                 dados["logo_cliente_base64"] = "data:image/png;base64," + base64.b64encode(logo_file.read()).decode("utf-8")
+            except Exception:
+                flash("Erro ao processar o logotipo do cliente. Tente outro arquivo de imagem.", "danger")
+                return redirect(url_for("formulario"))
        
         # Ações e pendências
         dados["acoes"] = list(zip(
@@ -230,7 +240,7 @@ def formulario():
         dados["nome_arquivo"] = nome_relatorio
        
         # Gera HTML e PDF (em memória)
-        html = render_template("relatorio.html", dados=dados)
+        html = render_template("relatorio.html", dados=dados, gerar_pdf=True)
         caminho_arquivo = os.path.join(PASTA_RELATORIOS, nome_relatorio)
         HTML(string=html).write_pdf(target=caminho_arquivo)
        
@@ -244,8 +254,7 @@ def configurar_empresa():
     if "usuario" not in session:
         flash("Acesso não autorizado. Faça login.", "danger")
         return redirect(url_for("index"))
-    
-    # Carregar dados da empresa responsavel
+
     empresa_responsavel = carregar_dados_empresa_responsavel()
 
     if request.method == "POST":
@@ -260,17 +269,18 @@ def configurar_empresa():
         # Verificar se foi enviado um logo
         if "logo_empresa" in request.files:
             logo_arquivo = request.files["logo_empresa"]
-            if logo_arquivo.filename != "":
-               nome_arquivo = secure_filename(logo_arquivo.filename)
-               salvar_logo_empresa(logo_arquivo)  # já salva no lugar certo
-               dados_empresa["empresa_logotipo"] = nome_arquivo
+            if logo_arquivo and logo_arquivo.filename != "":
+                try:
+                    # Converte diretamente para base64 (sem salvar no disco)
+                    dados_empresa["empresa_logotipo"] = "data:image/png;base64," + base64.b64encode(logo_arquivo.read()).decode("utf-8")
+                except Exception as e:
+                    flash(f"Erro ao processar o logotipo: {str(e)}", "danger")
+                    return redirect(url_for("configurar_empresa"))
 
-        # Salvar dados no arquivo JSON
         salvar_dados_empresa_responsavel(dados_empresa)
-        
-        flash("Dados da empresa responsavel atualizados com sucesso!", "success")
+        flash("Dados da empresa responsável atualizados com sucesso!", "success")
         return redirect(url_for("painel"))
-    
+
     return render_template("configurar_empresa.html", dados_empresa=empresa_responsavel)
 
 @app.route("/relatorios/<filename>")

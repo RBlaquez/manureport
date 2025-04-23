@@ -59,8 +59,8 @@
       <div class="text-center mb-3">
         <label class="form-label">Pré-visualização do Logo</label>
         <div>
-          <img src="{{ url_for('static', filename='logos/' + dados_empresa.empresa_logotipo.split('/')[-1]) }}" alt="Logo" style="max-height: 120px;">
-        </div>
+          <img src="{{ dados_empresa.empresa_logotipo }}" alt="Logo" style="max-height: 120px;">
+		</div>
       </div>
       {% endif %}
       <button type="submit" class="btn btn-primary w-100">Salvar Configurações</button>
