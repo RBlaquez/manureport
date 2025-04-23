@@ -1,4 +1,4 @@
 Flask==2.3.2
 WeasyPrint==61.2
 gunicorn==21.2.0
-pydyf>=0.8.0
+pydyf==0.9.0
